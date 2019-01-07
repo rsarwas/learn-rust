@@ -1,19 +1,24 @@
-/// Prints and times solutions to Project Euler problems
-///
-/// With no arguments, it runs the function run_test, which can be set up
-/// for testing a solution to a particular problem.  With a single numerical
-/// argument, it will time the solution to that particular problem, if
-/// available.  With the *all* it will solve all available problems.
-///
+//! Prints and times solutions to Project Euler problems
+//!
+//! With no arguments, it runs the function run_test, which can be set up
+//! for testing a solution to a particular problem.  With a single numerical
+//! argument, it will time the solution to that particular problem, if
+//! available.  With the *all* it will solve all available problems.
 mod euler;
 
-// Edit the body of this function to call code during development
+/// Test Runner
+/// 
+/// Edit the body of this function to call code during development
 fn run_test() {
     //euler::math::fibonacci::benchmark();
     //euler::problem002::test();
     euler::problem002::sample();
 }
 
+/// Run only one selected problem.
+/// 
+/// The input (n) must be one of the solved problems.
+/// This is useful for timing tests
 fn run_one(n: u32) {
     if let Some(function) = FUNCTIONS.iter().find(|&&t| t.0 == n) {
         let function = function.1;
@@ -26,6 +31,10 @@ fn run_one(n: u32) {
     }
 }
 
+/// Run all of the solved Euler problems.
+/// 
+/// See the FUNCTIONS constant for a list of the
+/// solved problems.
 fn run_all() {
     for (n, euler) in FUNCTIONS.iter() {
         let start = std::time::Instant::now();
@@ -48,12 +57,13 @@ fn main() {
     }
 }
 
-// Add new solutions here
-// The first item in the tuple is the problem number, and the
-// second is the funtion that yields the solution.
-// be sure to update the length in the constant type when adding
-// to the array
+/// List of solved Euler Problems
+/// 
+/// The first item in the tuple is the problem number, and the
+/// second is the function that yields the solution as a u64.
 const FUNCTIONS :[(u32, fn() -> u64); 2] = [
     (1, || euler::problem001::answer()),
-    (2, || euler::problem002::answer())
+    (2, || euler::problem002::answer()),
+    // Add new solutions here
+    // Update the length in the constant type when done
 ];
