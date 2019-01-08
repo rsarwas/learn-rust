@@ -10,8 +10,8 @@ mod euler;
 /// 
 /// Edit the body of this function to call code during development
 fn run_test() {
-    //euler::problem003::sample();
-    euler::math::fibonacci::benchmark();
+    println!("{}", euler::problem004::sample());
+    //euler::math::fibonacci::benchmark();
 }
 
 /// Run only one selected problem.
@@ -60,10 +60,11 @@ fn main() {
 /// 
 /// The first item in the tuple is the problem number, and the
 /// second is the function that yields the solution as a u64.
-const FUNCTIONS :[(u32, fn() -> u64); 3] = [
+const FUNCTIONS :[(u32, fn() -> u64); 4] = [
     (1, || euler::problem001::answer()),
     (2, || euler::problem002::answer()),
     (3, || euler::problem003::answer()),
+    (4, || euler::problem004::answer()),
     // Add new solutions here
     // Update the length in the constant type when done
 ];
