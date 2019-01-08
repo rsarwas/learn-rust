@@ -10,7 +10,8 @@ mod euler;
 /// 
 /// Edit the body of this function to call code during development
 fn run_test() {
-    euler::problem003::sample();
+    //euler::problem003::sample();
+    euler::math::fibonacci::benchmark();
 }
 
 /// Run only one selected problem.

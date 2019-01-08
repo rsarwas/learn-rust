@@ -50,7 +50,7 @@ pub fn sample() {
 /// asert_eq!(answer, 44);
 /// ```
 pub fn option1(n : usize) -> usize {
-    fibonacci::iter().take_while(|x| *x <= n)
+    fibonacci::iter2().take_while(|x| *x <= n)
                .filter(|x| x % 2 == 0)
                .sum()
 }

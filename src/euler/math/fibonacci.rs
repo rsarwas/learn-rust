@@ -133,6 +133,23 @@ pub fn iter() -> Fib {
     Fib::new()
 }
 
+/// Returns an iterator that produces an infinite sequence of Fibonacci numbers
+///
+/// The sequence skips 0 and starts with 1, 1, 2, 3, 5, ...
+/// This solution is the fastest and most memory efficient,
+/// but the [scan] function is a little hard to read.
+/// 
+/// Idea came from this [thread] on the rust forums.
+/// 
+/// [scan]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.scan
+/// [thread]: https://users.rust-lang.org/t/tuples-destructuring-assignment/11028/2
+pub fn iter2() -> impl Iterator<Item = usize> {
+    (1..).scan((0,1), |x, _| {
+        *x = (x.1, x.0 + x.1);
+        Some(x.0)
+    })
+}
+
 // TODO: Create a generator based solution.
 // This will not require a struct to hold state
 // Generators are not in the stable release (as of 2018-01-07)
@@ -173,6 +190,12 @@ pub fn benchmark() {
     println!("Iterator solution");
     let mut start = std::time::Instant::now();
     for (i, f) in iter().take(20).enumerate() {
+        println!("fib #{} = {} in {:?}", i, f, start.elapsed());
+        start = std::time::Instant::now();
+    }
+    println!("Iterator solution #2");
+    let mut start = std::time::Instant::now();
+    for (i, f) in iter2().take(20).enumerate() {
         println!("fib #{} = {} in {:?}", i, f, start.elapsed());
         start = std::time::Instant::now();
     }
