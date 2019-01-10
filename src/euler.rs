@@ -1,5 +1,5 @@
 //! A collection of Euler problem solutions
-//! 
+//!
 //! Each solution is in a separate module with test cases.
 //! Functions useful to multiple problems are collected
 //! in the math module.

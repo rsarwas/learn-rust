@@ -3,11 +3,11 @@
 //! With no arguments, it runs the function run_test, which can be set up
 //! for testing a solution to a particular problem.  With a single numerical
 //! argument, it will time the solution to that particular problem, if
-//! available.  With the *all* it will solve all available problems.
+//! available.  With *all* it will solve all available problems.
 mod euler;
 
 /// Test Runner
-/// 
+///
 /// Edit the body of this function to call code during development
 fn run_test() {
     println!("{}", euler::problem004::sample());
@@ -15,7 +15,7 @@ fn run_test() {
 }
 
 /// Run only one selected problem.
-/// 
+///
 /// The input (n) must be one of the solved problems.
 /// This is useful for timing tests
 fn run_one(n: u32) {
@@ -31,7 +31,7 @@ fn run_one(n: u32) {
 }
 
 /// Run all of the solved Euler problems.
-/// 
+///
 /// See the FUNCTIONS constant for a list of the
 /// solved problems.
 fn run_all() {
@@ -49,7 +49,7 @@ fn main() {
         let arg = &args[1];
         match arg.parse() {
             Ok(n) => run_one(n),
-            Err(_) => run_all()
+            Err(_) => run_all(),
         }
     } else {
         run_test();
@@ -57,10 +57,10 @@ fn main() {
 }
 
 /// List of solved Euler Problems
-/// 
+///
 /// The first item in the tuple is the problem number, and the
 /// second is the function that yields the solution as a u64.
-const FUNCTIONS :[(u32, fn() -> u64); 4] = [
+const FUNCTIONS: [(u32, fn() -> u64); 4] = [
     (1, || euler::problem001::answer()),
     (2, || euler::problem002::answer()),
     (3, || euler::problem003::answer()),

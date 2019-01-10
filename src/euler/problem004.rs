@@ -1,11 +1,11 @@
 //! Largest palindrome product
-//! 
+//!
 //! A palindromic number reads the same both ways.
 //! The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
-//! 
+//!
 use super::math;
 
-/// Problem 4 
+/// Problem 4
 ///
 /// Find the largest palindrome made from the product of two 3-digit numbers.
 ///
@@ -14,15 +14,17 @@ use super::math;
 /// i.e. if n = 978, then p = 978_789
 /// for each p try dividing by x in (999..100), stop if divisible (p is the answer),
 /// or the result > 999 (p is not a solution).
-/// 
+///
 /// We could optimize by trying only even x when p is even, but I'm going to guess
 /// that the solution is greater than 899, so all p are odd.
 pub fn answer() -> u64 {
     // Rust does not have a descending range.  The range (1..n) goes to n-1
-    (100..=997).rev()
-               .map(create_palindrome)
-               .filter(|&x| is_divisible_by_3digits(x))
-               .nth(0).unwrap() as u64
+    (100..=997)
+        .rev()
+        .map(create_palindrome)
+        .filter(|&x| is_divisible_by_3digits(x))
+        .nth(0)
+        .unwrap() as u64
 }
 
 /// Problem 4 (Test Sample)
@@ -30,16 +32,18 @@ pub fn answer() -> u64 {
 /// Find the largest palindrome made from the product of two 2-digit numbers.
 ///
 pub fn sample() -> u64 {
-    (90..=97).rev()
-             .map(create_palindrome)
-             .filter(|&x| is_divisible_by_2digits(x))
-             .nth(0).unwrap() as u64
+    (90..=97)
+        .rev()
+        .map(create_palindrome)
+        .filter(|&x| is_divisible_by_2digits(x))
+        .nth(0)
+        .unwrap() as u64
 }
 
 /// Creates a palindrome from a number
 ///
-/// The output is concat(n, rev(n)) 
-/// 
+/// The output is concat(n, rev(n))
+///
 /// # Examples
 /// ```
 /// assert_eq!(create_palindrome(1234), 12344321)
@@ -50,7 +54,7 @@ fn create_palindrome(x: usize) -> usize {
 }
 
 /// Returns a number
-/// 
+///
 /// # Examples
 /// ```
 /// assert_eq!(reverse_number(678), 876)
@@ -67,7 +71,7 @@ fn reverse_number(x: usize) -> usize {
 }
 
 /// Returns the number of digits in a number
-/// 
+///
 /// # Examples
 /// ```
 /// assert_eq!(number_of_digits(777), 3)
@@ -83,10 +87,10 @@ fn number_of_digits(x: usize) -> u32 {
 }
 
 /// Is a number is divisible by two 3 digit numbers?
-/// 
+///
 /// Returns true if the input is a multiple of
 /// any two 3 digit numbers (100..=999).
-/// 
+///
 /// # Examples
 /// ```
 /// assert!(is_divisible_by_3digits(856800));
@@ -98,10 +102,10 @@ fn is_divisible_by_3digits(x: usize) -> bool {
 }
 
 /// Is a number is divisible by two 2 digit numbers?
-/// 
+///
 /// Returns true if the input is a multiple of
-/// any two 2 digit numbers (10..=99). 
-/// 
+/// any two 2 digit numbers (10..=99).
+///
 /// # Examples
 /// ```
 /// assert!(is_divisible_by_2digits(9009));

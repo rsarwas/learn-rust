@@ -5,14 +5,14 @@
 //! Find the sum of all the multiples of 3 or 5 below 1000.
 
 /// Euler Problem # 1
-/// 
+///
 /// Find the sum of all the multiples of 3 or 5 below 1000.
 pub fn answer() -> u64 {
-	option4(1000)
+    option4(1000)
 }
 
 /// Euler Problem # 1 (Test Sample)
-/// 
+///
 /// Find the sum of all the multiples of 3 or 5 below 10.
 #[allow(dead_code)]
 pub fn sample() {

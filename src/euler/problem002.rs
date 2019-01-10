@@ -9,14 +9,14 @@
 use super::math::fibonacci;
 
 /// Euler Problem # 2
-/// 
+///
 /// Find the sum of the even Fibonacci numbers not exceeding four million.
 pub fn answer() -> u64 {
-	option3(4_000_000) as u64
+    option3(4_000_000) as u64
 }
 
 /// Euler Problem # 2 (Test Sample)
-/// 
+///
 /// Find the sum of the even Fibonacci numbers not exceeding 89.
 /// This prints the fibonacci series, then just the even terms,
 /// so that we can visually verify the answer for a simple case.
@@ -27,7 +27,10 @@ pub fn sample() {
         print!(" {}", f);
     }
     println!("\nEven fibonnaci numbers that do not exceed 89");
-    for f in fibonacci::iter().take_while(|x| *x <= 89).filter(|x| x % 2 == 0) {
+    for f in fibonacci::iter()
+        .take_while(|x| *x <= 89)
+        .filter(|x| x % 2 == 0)
+    {
         print!(" {}", f);
     }
     println!("\nSum of even fibonnaci numbers that do not exceed 89");
@@ -39,7 +42,7 @@ pub fn sample() {
 // See the fibonacci module for benchmarking of the fibonacci methods
 
 /// Sum of even Fibonacci numbers upto n
-/// 
+///
 /// Option #1:  Solve with an infinite fibonnaci iterator
 /// with release build, this takes about 100ns
 ///
@@ -49,14 +52,15 @@ pub fn sample() {
 /// let answer = option1(89);
 /// asert_eq!(answer, 44);
 /// ```
-pub fn option1(n : usize) -> usize {
-    fibonacci::iter2().take_while(|x| *x <= n)
-               .filter(|x| x % 2 == 0)
-               .sum()
+pub fn option1(n: usize) -> usize {
+    fibonacci::iter2()
+        .take_while(|x| *x <= n)
+        .filter(|x| x % 2 == 0)
+        .sum()
 }
 
 /// Sum of even Fibonacci numbers upto n
-/// 
+///
 /// Option #2:  Solve with a vector of Fibonacci terms
 /// This is much slower than the iterator solution
 /// with release build, this takes about 40µs
@@ -67,7 +71,7 @@ pub fn option1(n : usize) -> usize {
 /// let answer = option1(89);
 /// asert_eq!(answer, 44);
 /// ```
-pub fn option2(n : usize) -> usize {
+pub fn option2(n: usize) -> usize {
     let mut sum = 0;
     for f in fibonacci::fibonacci_upto(n).iter() {
         if f % 2 == 0 {
@@ -78,7 +82,7 @@ pub fn option2(n : usize) -> usize {
 }
 
 /// Sum of even Fibonacci numbers upto n
-/// 
+///
 /// Option #3:  Solve by doing testing and summing in the fibonacci generator
 /// Surprisingly, this is no faster than the iterator solution
 ///
@@ -88,13 +92,17 @@ pub fn option2(n : usize) -> usize {
 /// let answer = option1(89);
 /// asert_eq!(answer, 44);
 /// ```
-pub fn option3(n : usize) -> usize {
+pub fn option3(n: usize) -> usize {
     let mut sum = 2;
     let mut x = (3, 5);
     loop {
         let next = x.0 + x.1;
-        if next > n { break; };
-        if next % 2 == 0 { sum += next; };
+        if next > n {
+            break;
+        };
+        if next % 2 == 0 {
+            sum += next;
+        };
         x = (x.1, next);
     }
     sum
