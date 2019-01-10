@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 primal = "0.2"
+num-integer = "0.1"

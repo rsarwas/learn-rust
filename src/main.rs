@@ -60,11 +60,12 @@ fn main() {
 ///
 /// The first item in the tuple is the problem number, and the
 /// second is the function that yields the solution as a u64.
-const FUNCTIONS: [(u32, fn() -> u64); 4] = [
+const FUNCTIONS: [(u32, fn() -> u64); 5] = [
     (1, || euler::problem001::answer()),
     (2, || euler::problem002::answer()),
     (3, || euler::problem003::answer()),
     (4, || euler::problem004::answer()),
+    (5, || euler::problem005::answer()),
     // Add new solutions here
     // Update the length in the constant type when done
 ];
