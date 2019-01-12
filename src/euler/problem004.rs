@@ -31,6 +31,7 @@ pub fn answer() -> u64 {
 ///
 /// Find the largest palindrome made from the product of two 2-digit numbers.
 ///
+#[allow(dead_code)]
 pub fn sample() -> u64 {
     (90..=97)
         .rev()
