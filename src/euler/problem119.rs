@@ -26,7 +26,7 @@ pub fn answer() -> u64 {
 /// in looking at bases from 10..100 and exponents from 2..10, I found more than 30
 /// solutions, all smaller than 50^10.  I increased the range of the base, and the
 /// range of the exponent, but broke from the loop when I reached 50^10, and got more
-/// solutions.  The first 30 solutions all had a base in 7..70 and an exponent in 2..9 
+/// solutions.  The first 30 solutions all had a base in 7..70 and an exponent in 2..9
 #[allow(dead_code)]
 pub fn sample() {
     let max = 50_usize.pow(10);
@@ -44,12 +44,12 @@ pub fn sample() {
 }
 
 /// Find a(n) for n = 1..30
-/// 
+///
 /// For speed this function limits the search of the base and the exponent
 /// per the discussion in the sample code.
 pub fn option1(n: usize) -> usize {
     if n > 30 {
-        return 0
+        return 0;
     }
     let mut v: Vec<usize> = Vec::with_capacity(40);
     for i in 7..70_usize {
@@ -61,7 +61,7 @@ pub fn option1(n: usize) -> usize {
         }
     }
     v.sort();
-    v[n-1]
+    v[n - 1]
 }
 
 /// Returns the sum of a numbers digits

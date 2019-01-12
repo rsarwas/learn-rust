@@ -1,27 +1,27 @@
 //! Diophantine reciprocals I
 //!
 //! In the following equation x, y, and n are positive integers.
-//! 
+//!
 //!      1   1   1
 //!      - + - = -
 //!      x   y   n
-//! 
+//!
 //! For n = 4 there are exactly three distinct solutions:
-//! 
+//!
 //!      1   1    1
 //!      - + -- = -
 //!      5   20   4
-//! 
+//!
 //!      1   1    1
 //!      - + -- = -
 //!      6   12   4
-//! 
+//!
 //!      1   1   1
 //!      - + - = -
 //!      8   8   4
-//! 
+//!
 //! What is the least value of n for which the number of distinct solutions exceeds one-thousand?
-//! 
+//!
 //! NOTE: This problem is an easier version of Problem 110;
 //! it is strongly advised that you solve this one first.
 
@@ -37,7 +37,7 @@ pub fn answer() -> u64 {
 /// Problem 5 (Test Sample)
 ///
 /// Number of distinct solutions for n
-/// 
+///
 /// The solution involves considering all x in (n+1..2n), obviously, x = n requires y to be
 /// infinite, and x < n requires y to be negative.  x = 2n is always a solution with y = 2n.
 /// if x > 2n, then y < 2n, and we may get x,y pairs reversed from solutions already found.
@@ -48,13 +48,11 @@ pub fn answer() -> u64 {
 /// negligable performance increase.
 pub fn diophantine_solutions(n: u64) -> u64 {
     let n2 = n * n;
-    (1..=n).filter(|i| {
-        n2 % i == 0  
-    }).count() as u64
+    (1..=n).filter(|i| n2 % i == 0).count() as u64
 }
 
 /// Prints successive maximum solutions
-/// 
+///
 /// Originally I started at 4 and stepped by 1, but it became
 /// obvious that all the new maximums are multiples of 10.
 /// I was unable to dicern any other pattern.  I know the starting
@@ -81,7 +79,7 @@ pub fn find_trend(n1: u64, n2: u64) {
 
 /// Find the smallest number above start that has more
 /// solutions than goal.
-/// 
+///
 /// based on the trend analysis, I know if I start with a multiple of
 /// 10, I can step by 10.  This invariant is not checked by the code,
 /// but enforced by the caller.
@@ -91,7 +89,7 @@ fn option1(start: u64, goal: u64) -> u64 {
         let solutions = diophantine_solutions(i);
         if solutions > goal {
             answer = i;
-            break
+            break;
         }
     }
     answer
