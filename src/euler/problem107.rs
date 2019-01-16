@@ -58,6 +58,7 @@ pub fn answer() -> u64 {
 /// Problem 107 (Test Sample)
 ///
 /// Find the maximum savings by removing redundant edges in problem107.txt
+#[allow(dead_code)]
 pub fn sample() {
     let (n, v) = sample_network();
     println!("{:?}", v);
