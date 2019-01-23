@@ -70,6 +70,38 @@ pub fn polytopic_number(r: usize, n: usize) -> usize {
     numerator / denominator
 }
 
+/// Returns a power set of a vector
+///
+/// A power set is the set (implemeted as a vector) of all the premutations
+/// of the members of the input vector. i.e. given the input [a,b,c] the
+/// powerset will generate [[], [c], [b], [c, b], [a], [c, a], [b, a], [c, b, a]]
+/// 
+/// This solution does not mutate the input vector, and only generates a
+/// solution for the slice v[index..].  index must be passed, because
+/// rust does not allow passing variable sized slices (it doesn't know the size).
+///  
+/// This can be used to generate the divisors of a number, as the divisors is
+/// the power set of all prime factors.  However due to the cloning of the
+/// vectors and the recursive implementation, it will be more economical to
+/// implement a less general solution.
+#[allow(dead_code)]
+pub fn power_set<T: Copy>(v: &[T], index: usize) -> Vec<Vec<T>> {
+    if v.len() == index {
+        let mut empty = Vec::new();
+        empty.push(Vec::new());
+        return empty
+    }
+    let head = v[index];
+    let tail = index + 1;
+    let mut ps = power_set(v, tail);
+    for i in 0..ps.len() {
+        let mut p = ps[i].clone();
+        p.push(head);
+        ps.push(p);
+    }
+    ps
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
