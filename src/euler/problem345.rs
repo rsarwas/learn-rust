@@ -21,8 +21,9 @@ const ULIMIT: usize = 1000;  // A number bigger than all the matrix elements
 ///
 /// Find the Matrix Sum of: the matrix in ../problem345.txt 
 pub fn answer() -> u64 {
-    let max = max_assignment(&mut matrix(), N).unwrap();
-    sum_of_assignments(&matrix(), N, max) as u64
+    let n = N;
+    let max = max_assignment(&mut matrix(), n).unwrap();
+    sum_of_assignments(&matrix(), n, max) as u64
 }
 
 /// Problem 345 (Test Sample)
@@ -30,18 +31,19 @@ pub fn answer() -> u64 {
 /// Find the Matrix Sum of: the sample matrix above 
 #[allow(dead_code)]
 pub fn sample() {
+    let n = SAMPLE_N;
     let mut m = sample_matrix();
     println!("original matrix");
-    print_matrix(&m, SAMPLE_N);
-    let max = max_assignment(&mut m, SAMPLE_N).unwrap();
+    print_matrix(&m, n);
+    let max = max_assignment(&mut m, n).unwrap();
     println!("modified matrix:");
-    print_matrix(&m, SAMPLE_N);
+    print_matrix(&m, n);
     //println!("assign workers:");
-    //min_several(&mut m, SAMPLE_N);
+    //min_several(&mut m, n);
     //println!("minimized matrix:");
-    //print_matrix(&m, SAMPLE_N);
+    //print_matrix(&m, n);
     //println!("max assignments = {:?}", max);
-    let sum = sum_of_assignments(&sample_matrix(), SAMPLE_N, max);
+    let sum = sum_of_assignments(&sample_matrix(), n, max);
     println!("Sum of max assignents = {}", sum);
 }
 
@@ -94,33 +96,27 @@ fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
         }
     }
     //println!("modified matrix:");
-    //print_matrix(&m, SAMPLE_N);
+    //print_matrix(&m, n);
 
     // repeat steps 3 and 4 until there is an assignment
-    let mut s = assign_workers(&m, N);
-    while let Status::Undone((rows,cols)) = s {
+    let mut s = assign_workers(&m, n);
+    while let Err((rows,cols)) = s {
         //println!("Undone:");
         //println!("  marked rows: {:?}", rows);
         //println!("  marked cols: {:?}", cols);
         //println!("  updated matrix:");
-        update_cost(m, N, &rows, &cols);
-        //print_matrix(&m, SAMPLE_N);
-        s = assign_workers(&m, N);
+        update_cost(m, n, &rows, &cols);
+        //print_matrix(&m, n);
+        s = assign_workers(&m, n);
     }
-    if let Status::Done(assignments) = s {
+    if let Ok(assignments) = s {
         //println!("Done: {:?}", assignments);
-        //print_matrix(&m, SAMPLE_N);
+        //print_matrix(&m, n);
         return Some(assignments);
     } else {
         println!("WTF???");
     }
     None
-}
-
-#[derive(Debug)]
-enum Status {
-    Done(Vec<(usize,usize)>),
-    Undone(([bool;N],[bool;N])),
 }
 
 /// Assign workers to tasks
@@ -140,7 +136,7 @@ enum Status {
 /// of rows twice, first picking all of the workers with a single
 /// optimal assignment, and then hopefully the rest will not lead
 /// to any sub-optimal solutions.
-fn assign_workers(m: &[usize], n: usize) -> Status {
+fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N],[bool;N])> {
     // All of the zero values that should not be ignored
     let mut crossed_out: [bool; N2] = [false; N2];
     // A list of the rows that are skipped on the first round
@@ -254,10 +250,10 @@ fn assign_workers(m: &[usize], n: usize) -> Status {
         for i in 0..n {
             row_marked_at[i] = !row_marked_at[i];
         }
-        return Status::Undone((row_marked_at, col_marked_at))
+        return Err((row_marked_at, col_marked_at))
     }
     // each worker has an assignment, so we are done.
-    Status::Done(assignments)
+    Ok(assignments)
 }
 
 /// Update the cost matrix (step 4)
@@ -368,8 +364,9 @@ mod tests {
 
     #[test]
     pub fn matrix_sum_test() {
-        let max = max_assignment(&mut sample_matrix(), SAMPLE_N).unwrap();
-        let sum = sum_of_assignments(&sample_matrix(), SAMPLE_N, max);
+        let n = SAMPLE_N;
+        let max = max_assignment(&mut sample_matrix(), n).unwrap();
+        let sum = sum_of_assignments(&sample_matrix(), n, max);
         assert_eq!(sum, 3315);
     }
 }
