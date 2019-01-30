@@ -3,23 +3,23 @@
 //! We define the Matrix Sum of a matrix as the maximum sum of matrix elements
 //! with each element being the only one in his row and column. For example,
 //! the Matrix Sum of the matrix below equals 3315 ( = 863 + 383 + 343 + 959 + 767):
-//! 
+//!
 //!   7  53 183 439 863
 //! 497 383 563  79 973
 //! 287  63 343 169 583
 //! 627 343 773 959 943
 //! 767 473 103 699 303
-//! 
+//!
 
 const SAMPLE_N: usize = 5;
 const SAMPLE_N2: usize = 25;
 const N: usize = 15;
 const N2: usize = 225;
-const ULIMIT: usize = 1000;  // A number bigger than all the matrix elements
+const ULIMIT: usize = 1000; // A number bigger than all the matrix elements
 
 /// Problem 345
 ///
-/// Find the Matrix Sum of: the matrix in ../problem345.txt 
+/// Find the Matrix Sum of: the matrix in ../problem345.txt
 pub fn answer() -> u64 {
     let n = N;
     let max = max_assignment(&mut matrix(), n).unwrap();
@@ -28,7 +28,7 @@ pub fn answer() -> u64 {
 
 /// Problem 345 (Test Sample)
 ///
-/// Find the Matrix Sum of: the sample matrix above 
+/// Find the Matrix Sum of: the sample matrix above
 #[allow(dead_code)]
 pub fn sample() {
     let n = SAMPLE_N;
@@ -48,36 +48,36 @@ pub fn sample() {
 }
 
 /// Returns the maximum assignments for a matrix
-/// 
+///
 /// This is done by subtracting each element from a
 /// value known to be greater than each cell, and then
 /// finding the minimal assignments for that matrix.
-fn max_assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
+fn max_assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize, usize)>> {
     // convert to a matrix that can be minimized
-    for i in 0..n*n {
+    for i in 0..n * n {
         m[i] = ULIMIT - m[i];
     }
     assignment(m, n)
 }
 
 /// Returns the minimum assignments for a matrix
-/// 
-/// This uses the [hungarian algorithm] to the 
+///
+/// This uses the [hungarian algorithm] to the
 /// [assignment problem].
-/// 
+///
 /// [hungarian algorithm]: https://en.wikipedia.org/wiki/Hungarian_algorithm
 /// [assignment problem]: https://en.wikipedia.org/wiki/Assignment_problem
-fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
+fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize, usize)>> {
     // minimize rows (step 1)
     for r in 0..n {
         let mut min = ULIMIT;
-        let base = r*n; 
-        for i in base..base+n {
+        let base = r * n;
+        for i in base..base + n {
             if m[i] < min {
                 min = m[i];
             }
         }
-        for i in base..base+n {
+        for i in base..base + n {
             m[i] = m[i] - min;
         }
     }
@@ -85,13 +85,13 @@ fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
     for c in 0..n {
         let mut min = ULIMIT;
         for r in 0..n {
-            let i = r*n + c;
+            let i = r * n + c;
             if m[i] < min {
                 min = m[i];
             }
         }
         for r in 0..n {
-            let i = r*n + c;
+            let i = r * n + c;
             m[i] = m[i] - min;
         }
     }
@@ -100,7 +100,7 @@ fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
 
     // repeat steps 3 and 4 until there is an assignment
     let mut s = assign_workers(&m, n);
-    while let Err((rows,cols)) = s {
+    while let Err((rows, cols)) = s {
         //println!("Undone:");
         //println!("  marked rows: {:?}", rows);
         //println!("  marked cols: {:?}", cols);
@@ -120,11 +120,11 @@ fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
 }
 
 /// Assign workers to tasks
-/// 
+///
 /// Returns either a list of assignments, or a pair of
 /// masks for the rows/columns that are marked 'out' for
 /// the next iteration.
-/// 
+///
 /// This tasks looks are each row (workers), and if there is
 /// an optimal task (col with zero), then it calls that an
 /// assignment, and crosses out any other optimal assignments
@@ -136,7 +136,7 @@ fn assignment(m: &mut [usize], n: usize) -> Option<Vec<(usize,usize)>> {
 /// of rows twice, first picking all of the workers with a single
 /// optimal assignment, and then hopefully the rest will not lead
 /// to any sub-optimal solutions.
-fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N],[bool;N])> {
+fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize, usize)>, ([bool; N], [bool; N])> {
     // All of the zero values that should not be ignored
     let mut crossed_out: [bool; N2] = [false; N2];
     // A list of the rows that are skipped on the first round
@@ -150,12 +150,12 @@ fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N]
     for r in 0..n {
         //println!("....checking row {}", r);
         let mut zero_count = 0;
-        let mut found = (n,n);
+        let mut found = (n, n);
         for c in 0..n {
             let i = r * n + c;
             if m[i] == 0 && !crossed_out[i] {
                 zero_count += 1;
-                found = (r,c);
+                found = (r, c);
                 if zero_count > 1 {
                     //println!("....skipping row {}", r);
                     revisit.push(r);
@@ -188,13 +188,13 @@ fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N]
         for c in 0..n {
             let i = r * n + c;
             if m[i] == 0 && !crossed_out[i] {
-                let found = (r,c);
+                let found = (r, c);
                 //println!("....assignment found at: {:?}", found);
                 unassigned_row = false;
                 assignments.push(found);
                 // clear the rest of the row
                 // TODO: is this necessary?
-                for c2 in c+1..n {
+                for c2 in c + 1..n {
                     let i = r * n + c2;
                     if m[i] == 0 && !crossed_out[i] {
                         //println!("....crossing out: ({},{})", r, c2);
@@ -233,7 +233,7 @@ fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N]
             //println!("....marking row {}", r);
             row_marked_at[r] = true;
             for c in 0..n {
-                if m[r*n+c] == 0 {
+                if m[r * n + c] == 0 {
                     //println!("....marking col {}", c);
                     col_marked_at[c] = true;
                     for (r2, _) in assignments.iter().filter(|p| p.1 == c) {
@@ -250,14 +250,14 @@ fn assign_workers(m: &[usize], n: usize) -> Result<Vec<(usize,usize)>, ([bool;N]
         for i in 0..n {
             row_marked_at[i] = !row_marked_at[i];
         }
-        return Err((row_marked_at, col_marked_at))
+        return Err((row_marked_at, col_marked_at));
     }
     // each worker has an assignment, so we are done.
     Ok(assignments)
 }
 
 /// Update the cost matrix (step 4)
-/// 
+///
 /// Find the second minimum cost among the remaining choices,
 /// and update the costs
 fn update_cost(m: &mut [usize], n: usize, row_marked_at: &[bool], col_marked_at: &[bool]) {
@@ -271,7 +271,7 @@ fn update_cost(m: &mut [usize], n: usize, row_marked_at: &[bool], col_marked_at:
             if col_marked_at[c] {
                 continue;
             }
-            let i = r*n + c; 
+            let i = r * n + c;
             if m[i] < min {
                 min = m[i];
             }
@@ -284,14 +284,14 @@ fn update_cost(m: &mut [usize], n: usize, row_marked_at: &[bool], col_marked_at:
         if row_marked_at[r] {
             for c in 0..n {
                 if col_marked_at[c] {
-                    let i = r*n + c; 
+                    let i = r * n + c;
                     m[i] += min;
                 }
             }
         } else {
             for c in 0..n {
                 if !col_marked_at[c] {
-                    let i = r*n + c; 
+                    let i = r * n + c;
                     m[i] -= min;
                 }
             }
@@ -300,15 +300,15 @@ fn update_cost(m: &mut [usize], n: usize, row_marked_at: &[bool], col_marked_at:
 }
 
 /// Returns the sum of the assignment cells
-/// 
+///
 /// Uses the (row,column) indexes in the 'assign' vector to get the
 /// cell value from the original matrix.
-fn sum_of_assignments(m: &[usize], n: usize, assign: Vec<(usize,usize)>) -> usize {
-    assign.iter().map(|x| m[x.0*n + x.1]).sum()
+fn sum_of_assignments(m: &[usize], n: usize, assign: Vec<(usize, usize)>) -> usize {
+    assign.iter().map(|x| m[x.0 * n + x.1]).sum()
 }
 
 /// Returns the smaple matrix for testing
-/// 
+///
 /// The 5x5 matrix is a single array of 25 usize elements
 fn sample_matrix() -> [usize; SAMPLE_N2] {
     [
@@ -321,7 +321,7 @@ fn sample_matrix() -> [usize; SAMPLE_N2] {
 }
 
 /// Returns the problem matrix
-/// 
+///
 /// The 15x15 matrix is a single array of 225 usize elements
 fn matrix() -> [usize; N2] {
     [
@@ -344,15 +344,15 @@ fn matrix() -> [usize; N2] {
 }
 
 /// Pretty prints and array as a matrix
-/// 
+///
 /// using the fmt::Debug trait doesn't work for the large array,
 /// and it is hard to see what is going on without displaying in
 /// rows and columns
-fn print_matrix(m: &[usize], n: usize)  {
+fn print_matrix(m: &[usize], n: usize) {
     for r in 0..n {
         for c in 0..n {
-            let i = r*n + c;
-            print!("{:>4}",m[i]);
+            let i = r * n + c;
+            print!("{:>4}", m[i]);
         }
         println!("");
     }
