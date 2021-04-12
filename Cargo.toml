@@ -5,5 +5,5 @@ authors = ["Regan Sarwas <rsarwas@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-primal = "0.2"
+primal = "0.3"
 num-integer = "0.1"
